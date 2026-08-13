@@ -569,22 +569,20 @@ button {
   width: 100%;
   max-width: 1100px;
   margin: 0 auto clamp(2rem, 4vw, 3rem);
-
   font-family: var(--font-display);
   font-size: clamp(3rem, 7vw, 6.2rem);
   font-weight: 800;
   line-height: 0.95;
   letter-spacing: -0.035em;
   color: var(--text-primary);
-
   text-align: center;
 }
 
 .hero__line {
   display: block;
   width: 100%;
-  overflow: hidden;
   text-align: center;
+  white-space: nowrap;
 }
 
 .hero__line--accent {
@@ -594,7 +592,6 @@ button {
 /* Character animation spans (injected by JS) */
 .hero__char {
   display: inline-block;
-  will-change: transform, opacity;
 }
 
 .hero__sub {
@@ -1535,6 +1532,31 @@ button {
     display: block;
     width: 100%;
     text-align: center;
+  }
+
+  .hero__char {
+    display: inline-block;
+  }
+}
+@media (max-width: 767px) {
+  .hero__name {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin-left: 0;
+    margin-right: 0;
+
+    font-size: clamp(2.7rem, 12vw, 4rem);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    text-align: center;
+  }
+
+  .hero__line {
+    width: 100%;
+    display: block;
+    text-align: center;
+    white-space: nowrap;
   }
 
   .hero__char {
