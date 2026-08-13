@@ -19,27 +19,27 @@ const isDesktop       = () => window.innerWidth >= 1024;
 /* ─── CERTIFICATE DATA ──────────────────────────────────────── */
 const CERTS = [
   {
-    src:     './assets/certs/cisco-python-1.jpeg',
+    src:     './certs/cisco-python-1.jpeg',
     caption: 'Python Essentials 1 — Cisco Networking Academy',
     date:    'Nov 2024'
   },
   {
-    src:     './assets/certs/cisco-python-2.jpeg',
+    src:     './certs/cisco-python-2.jpeg',
     caption: 'Python Essentials 2 — Cisco Networking Academy',
     date:    'Dec 2024'
   },
   {
-    src:     './assets/certs/nptel-iiot.jpeg',
+    src:     './certs/nptel-iiot.jpeg',
     caption: 'Industry 4.0 & IIoT (Elite) — NPTEL / IIT Kharagpur',
     date:    'Jan–Apr 2025'
   },
   {
-    src:     './assets/certs/greatlearning-sql.jpeg',
+    src:     './certs/greatlearning-sql.jpeg',
     caption: 'SQL for Data Science — Great Learning Academy',
     date:    'Dec 2024'
   },
   {
-    src:     './assets/certs/zscaler-networking.jpeg',
+    src:     './certs/zscaler-networking.jpeg',
     caption: 'Networking for Cyber Professionals — Zscaler Academy',
     date:    'Valid to Mar 2028'
   },
