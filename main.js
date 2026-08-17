@@ -689,7 +689,6 @@ function init() {
   initNavbar();
   initMobileMenu();
   initScrollAnimations();
-  initCursor();
   initHeroParallax();
   initCardTilt();
   initResizeHandler();
