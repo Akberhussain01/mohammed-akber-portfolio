@@ -465,6 +465,10 @@ function initCursor() {
   let dotY   = mouseY;
   let ringX  = mouseX;
   let ringY  = mouseY;
+   dot.style.left = `${mouseX}px`;
+dot.style.top = `${mouseY}px`;
+ring.style.left = `${ringX}px`;
+ring.style.top = `${ringY}px`;
 
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
