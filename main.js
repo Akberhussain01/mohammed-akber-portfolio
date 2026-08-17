@@ -502,37 +502,80 @@ ring.style.top = `${ringY}px`;
 }
 
 /* ============================================================
+   11. CERTIFICATE LIGHTBOX
+   ============================================================ */
+function initLightbox() {
+  const lightbox  = select('#lightbox');
+  const imgEl     = select('#lightboxImg');
+  const captionEl = select('#lightboxCaption');
+  const counterEl = select('#lightboxCounter');
+  const imgWrap   = select('#lightboxImgWrap');
+  const closeBtn  = select('#lightboxClose');
+  const prevBtn   = select('#lightboxPrev');
+  const nextBtn   = select('#lightboxNext');
+  const backdrop  = select('#lightboxBackdrop');
 
-  /* ── Open ──────────────────────────────────────────── */
+  if (!lightbox) return;
+
+  let currentIdx = 0;
+  let isOpen = false;
+
   function openLightbox(idx) {
     currentIdx = ((idx % CERTS.length) + CERTS.length) % CERTS.length;
     const cert = CERTS[currentIdx];
 
-    imgEl.src    = cert.src;
-    imgEl.alt    = cert.caption;
-    captionEl.textContent = cert.caption;
-    counterEl.textContent = `${currentIdx + 1} / ${CERTS.length}`;
+    imgEl.src = cert.src;
+    imgEl.alt = cert.caption;
+
+    if (captionEl) captionEl.textContent = cert.caption;
+    if (counterEl) counterEl.textContent = `${currentIdx + 1} / ${CERTS.length}`;
 
     lightbox.removeAttribute('aria-hidden');
     document.body.style.overflow = 'hidden';
     isOpen = true;
 
-    // Animate in
-    gsap.set(lightbox, { opacity: 0, pointerEvents: 'all' });
-    gsap.set(imgWrap,  { scale: 0.88, opacity: 0, y: 20 });
+    gsap.set(lightbox, {
+      opacity: 0,
+      pointerEvents: 'all'
+    });
 
-    gsap.to(lightbox, { opacity: 1, duration: 0.3, ease: 'power2.out' });
-    gsap.to(imgWrap,  { scale: 1, opacity: 1, y: 0, duration: 0.45, ease: 'power3.out', delay: 0.05 });
+    gsap.set(imgWrap, {
+      scale: 0.88,
+      opacity: 0,
+      y: 20
+    });
 
-    closeBtn.focus();
+    gsap.to(lightbox, {
+      opacity: 1,
+      duration: 0.3,
+      ease: 'power2.out'
+    });
+
+    gsap.to(imgWrap, {
+      scale: 1,
+      opacity: 1,
+      y: 0,
+      duration: 0.45,
+      ease: 'power3.out',
+      delay: 0.05
+    });
+
+    closeBtn?.focus();
   }
 
-  /* ── Close ─────────────────────────────────────────── */
   function closeLightbox() {
     if (!isOpen) return;
+
     isOpen = false;
 
-    gsap.to(imgWrap,  { scale: 0.9, opacity: 0, y: -16, duration: 0.3, ease: 'power2.in' });
+    gsap.to(imgWrap, {
+      scale: 0.9,
+      opacity: 0,
+      y: -16,
+      duration: 0.3,
+      ease: 'power2.in'
+    });
+
     gsap.to(lightbox, {
       opacity: 0,
       duration: 0.35,
@@ -543,14 +586,15 @@ ring.style.top = `${ringY}px`;
         lightbox.style.pointerEvents = 'none';
         imgEl.src = '';
         document.body.style.overflow = '';
-      },
+      }
     });
   }
 
-  /* ── Navigate ──────────────────────────────────────── */
   function navigate(direction) {
-    const nextIdx = ((currentIdx + direction) + CERTS.length) % CERTS.length;
-    const cert    = CERTS[nextIdx];
+    const nextIdx =
+      ((currentIdx + direction) + CERTS.length) % CERTS.length;
+
+    const cert = CERTS[nextIdx];
 
     gsap.to(imgWrap, {
       x: direction * -40,
@@ -559,26 +603,41 @@ ring.style.top = `${ringY}px`;
       ease: 'power2.in',
       onComplete: () => {
         currentIdx = nextIdx;
-        imgEl.src             = cert.src;
-        imgEl.alt             = cert.caption;
-        captionEl.textContent  = cert.caption;
-        counterEl.textContent  = `${currentIdx + 1} / ${CERTS.length}`;
-        gsap.fromTo(imgWrap,
-          { x: direction * 40, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.3, ease: 'power3.out' }
+
+        imgEl.src = cert.src;
+        imgEl.alt = cert.caption;
+
+        if (captionEl) captionEl.textContent = cert.caption;
+        if (counterEl) {
+          counterEl.textContent =
+            `${currentIdx + 1} / ${CERTS.length}`;
+        }
+
+        gsap.fromTo(
+          imgWrap,
+          {
+            x: direction * 40,
+            opacity: 0
+          },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 0.3,
+            ease: 'power3.out'
+          }
         );
-      },
+      }
     });
   }
 
-  /* ── Cert card click events ─────────────────────────── */
   selectAll('.cert-card').forEach((card) => {
     const clickHandler = () => {
       const idx = parseInt(card.dataset.certIndex, 10);
       openLightbox(idx);
     };
 
-    card.addEventListener('click',   clickHandler);
+    card.addEventListener('click', clickHandler);
+
     card.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -587,28 +646,31 @@ ring.style.top = `${ringY}px`;
     });
   });
 
-  /* ── Controls ───────────────────────────────────────── */
   closeBtn?.addEventListener('click', closeLightbox);
   backdrop?.addEventListener('click', closeLightbox);
-  prevBtn?.addEventListener('click',  () => navigate(-1));
-  nextBtn?.addEventListener('click',  () => navigate(+1));
+  prevBtn?.addEventListener('click', () => navigate(-1));
+  nextBtn?.addEventListener('click', () => navigate(1));
 
-  /* ── Keyboard ───────────────────────────────────────── */
   document.addEventListener('keydown', (e) => {
     if (!isOpen) return;
-    if (e.key === 'Escape')     closeLightbox();
-    if (e.key === 'ArrowLeft')  navigate(-1);
-    if (e.key === 'ArrowRight') navigate(+1);
+
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') navigate(-1);
+    if (e.key === 'ArrowRight') navigate(1);
   });
 
-  /* ── Touch swipe ────────────────────────────────────── */
   let touchStartX = 0;
+
   lightbox.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
   }, { passive: true });
+
   lightbox.addEventListener('touchend', (e) => {
     const delta = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(delta) > 50) navigate(delta < 0 ? 1 : -1);
+
+    if (Math.abs(delta) > 50) {
+      navigate(delta < 0 ? 1 : -1);
+    }
   }, { passive: true });
 }
 
@@ -694,10 +756,11 @@ function init() {
   initMobileMenu();
   initScrollAnimations();
   initCursor();
+  initLightbox();
   initHeroParallax();
   initCardTilt();
   initResizeHandler();
-  initLoadTimeline(); // Last — ensures DOM is ready for all splits
+  initLoadTimeline();
 }
 
 /* ─── Bootstrap ─────────────────────────────────────────────── */
