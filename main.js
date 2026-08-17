@@ -188,47 +188,188 @@ function typewriter(element, text, speed = 38) {
    ============================================================ */
 function initLoadTimeline() {
   if (isReducedMotion()) {
-    // Just show everything immediately
-    gsap.set(['.navbar', '.hero__mono', '.hero__name', '.hero__sub', '.hero__ctas', '.hero__scroll-cue'], { opacity: 1, y: 0, x: 0 });
+    gsap.set(
+      [
+        '.navbar',
+        '.hero__mono',
+        '.hero__name',
+        '.hero__sub',
+        '.hero__ctas',
+        '.hero__scroll-cue'
+      ],
+      {
+        opacity: 1,
+        y: 0,
+        x: 0
+      }
+    );
+
     const monoEl = select('#heroMono');
-    if (monoEl) monoEl.textContent = 'Aspiring Full Stack Developer · Python';
+
+    if (monoEl) {
+      monoEl.textContent =
+        'Aspiring Full Stack Developer · Python';
+    }
+
     return;
   }
 
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-  // Split name lines into chars
-  const nameLines = selectAll('.hero__line');
-  const allChars  = [];
-  nameLines.forEach((line) => {
-    allChars.push(...splitToChars(line));
+  const tl = gsap.timeline({
+    defaults: {
+      ease: 'power3.out'
+    }
   });
 
-  // Set initial states
-  gsap.set('.navbar',           { y: -80, opacity: 0 });
-  gsap.set(allChars,            { y: 72, opacity: 0 });
-  gsap.set('#heroSub',          { y: 28, opacity: 0 });
-  gsap.set('#heroCtas',         { y: 24, opacity: 0 });
-  gsap.set('#heroScrollCue',    { opacity: 0 });
+  const nameLines = selectAll('.hero__line');
+  const allChars = [];
 
-  // Timeline
-  tl
-    .to('.navbar', { y: 0, opacity: 1, duration: 0.7 }, 0.15)
-    .to(allChars, {
+  /* ─────────────────────────────────────────
+     DESKTOP
+     Character-by-character animation
+     ───────────────────────────────────────── */
+  if (isDesktop()) {
+    nameLines.forEach((line) => {
+      allChars.push(...splitToChars(line));
+    });
+
+    gsap.set(allChars, {
+      y: 72,
+      opacity: 0
+    });
+  }
+
+  /* ─────────────────────────────────────────
+     MOBILE
+     Animate the complete name instead
+     ───────────────────────────────────────── */
+  else {
+    gsap.set('.hero__name', {
+      y: 35,
+      opacity: 0
+    });
+  }
+
+  /* ─────────────────────────────────────────
+     Initial states
+     ───────────────────────────────────────── */
+
+  gsap.set('.navbar', {
+    y: -80,
+    opacity: 0
+  });
+
+  gsap.set('#heroSub', {
+    y: 28,
+    opacity: 0
+  });
+
+  gsap.set('#heroCtas', {
+    y: 24,
+    opacity: 0
+  });
+
+  gsap.set('#heroScrollCue', {
+    opacity: 0
+  });
+
+  /* ─────────────────────────────────────────
+     Navbar
+     ───────────────────────────────────────── */
+
+  tl.to(
+    '.navbar',
+    {
       y: 0,
       opacity: 1,
-      stagger: 0.038,
-      duration: 0.55,
-    }, 0.35)
-    .add(() => {
-      const monoEl = select('#heroMono');
-      if (monoEl) typewriter(monoEl, 'Aspiring Full Stack Developer · Python', 36);
-    }, 0.5)
-    .to('#heroSub',       { y: 0, opacity: 1, duration: 0.65 }, 1.1)
-    .to('#heroCtas',      { y: 0, opacity: 1, duration: 0.6  }, 1.3)
-    .to('#heroScrollCue', { opacity: 1, duration: 0.5 }, 1.6);
-}
+      duration: 0.7
+    },
+    0.15
+  );
 
+  /* ─────────────────────────────────────────
+     Hero Name
+     ───────────────────────────────────────── */
+
+  if (isDesktop()) {
+    tl.to(
+      allChars,
+      {
+        y: 0,
+        opacity: 1,
+        stagger: 0.038,
+        duration: 0.55
+      },
+      0.35
+    );
+  } else {
+    tl.to(
+      '.hero__name',
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.7
+      },
+      0.35
+    );
+  }
+
+  /* ─────────────────────────────────────────
+     Typewriter
+     ───────────────────────────────────────── */
+
+  tl.add(() => {
+    const monoEl = select('#heroMono');
+
+    if (monoEl) {
+      typewriter(
+        monoEl,
+        'Aspiring Full Stack Developer · Python',
+        36
+      );
+    }
+  }, 0.5);
+
+  /* ─────────────────────────────────────────
+     Subtitle
+     ───────────────────────────────────────── */
+
+  tl.to(
+    '#heroSub',
+    {
+      y: 0,
+      opacity: 1,
+      duration: 0.65
+    },
+    1.1
+  );
+
+  /* ─────────────────────────────────────────
+     Buttons
+     ───────────────────────────────────────── */
+
+  tl.to(
+    '#heroCtas',
+    {
+      y: 0,
+      opacity: 1,
+      duration: 0.6
+    },
+    1.3
+  );
+
+  /* ─────────────────────────────────────────
+     Scroll Cue
+     ───────────────────────────────────────── */
+
+  tl.to(
+    '#heroScrollCue',
+    {
+      opacity: 1,
+      duration: 0.5
+    },
+    1.6
+  );
+}
 /* ============================================================
    6. SCROLL PROGRESS BAR
    ============================================================ */
