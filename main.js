@@ -16,35 +16,6 @@ const isReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce
 const isTouchDevice   = () => window.matchMedia('(hover: none), (pointer: coarse)').matches;
 const isDesktop       = () => window.innerWidth >= 1024;
 
-/* ─── CERTIFICATE DATA ──────────────────────────────────────── */
-const CERTS = [
-  {
-    src:     './certs/cisco-python-1.jpeg',
-    caption: 'Python Essentials 1 — Cisco Networking Academy',
-    date:    'Nov 2024'
-  },
-  {
-    src:     './certs/cisco-python-2.jpeg',
-    caption: 'Python Essentials 2 — Cisco Networking Academy',
-    date:    'Dec 2024'
-  },
-  {
-    src:     './certs/nptel-iiot.jpeg',
-    caption: 'Industry 4.0 & IIoT (Elite) — NPTEL / IIT Kharagpur',
-    date:    'Jan–Apr 2025'
-  },
-  {
-    src:     './certs/greatlearning-sql.jpeg',
-    caption: 'SQL for Data Science — Great Learning Academy',
-    date:    'Dec 2024'
-  },
-  {
-    src:     './certs/zscaler-networking.jpeg',
-    caption: 'Networking for Cyber Professionals — Zscaler Academy',
-    date:    'Valid to Mar 2028'
-  },
-];
-
 /* ============================================================
    1. LENIS SMOOTH SCROLL
    ============================================================ */
@@ -527,23 +498,6 @@ function initCursor() {
 }
 
 /* ============================================================
-   11. CERTIFICATE LIGHTBOX
-   ============================================================ */
-function initLightbox() {
-  const lightbox = select('#lightbox');
-  const imgEl    = select('#lightboxImg');
-  const captionEl= select('#lightboxCaption');
-  const counterEl= select('#lightboxCounter');
-  const imgWrap  = select('#lightboxImgWrap');
-  const closeBtn = select('#lightboxClose');
-  const prevBtn  = select('#lightboxPrev');
-  const nextBtn  = select('#lightboxNext');
-  const backdrop = select('#lightboxBackdrop');
-
-  if (!lightbox) return;
-
-  let currentIdx = 0;
-  let isOpen     = false;
 
   /* ── Open ──────────────────────────────────────────── */
   function openLightbox(idx) {
@@ -736,7 +690,6 @@ function init() {
   initMobileMenu();
   initScrollAnimations();
   initCursor();
-  initLightbox();
   initHeroParallax();
   initCardTilt();
   initResizeHandler();
